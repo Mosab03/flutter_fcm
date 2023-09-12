@@ -1,8 +1,7 @@
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'local_notification.dart';
 
 class FCM {
@@ -25,7 +24,7 @@ class FCM {
     Stream<String> _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     _tokenStream.listen(onTokenChanged);
 
-    // Set the background messaging handler early on, as a named top-level function
+// Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(onNotificationReceived);
 
     /// Update the iOS foreground notification presentation options to allow
@@ -41,7 +40,7 @@ class FCM {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       print('getInitialMessage');
-      print(message);
+      print(message.toString());
       if (message != null) {
         if (navigatorKey != null)
           Timer.periodic(
@@ -55,18 +54,20 @@ class FCM {
       }
     });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('A new onMessage event was published!');
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) async {
+        print('A new onMessage event was published!');
 
-      onNotificationReceived(message);
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-
-      if (notification != null && android != null && withLocalNotification) {
-        LocalNotification.showNotification(
-            notification: notification, payload: message.data, icon: icon);
-      }
-    });
+        onNotificationReceived(message);
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        print('Happy');
+        if (notification != null && android != null && withLocalNotification) {
+          await LocalNotification.showNotification(
+              notification: notification, payload: message.data, icon: icon);
+        }
+      },
+    );
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
@@ -80,7 +81,7 @@ class FCM {
     });
   }
 
-  //static Future<void> _firebaseMessagingBackgroundHandler
+//static Future<void> _firebaseMessagingBackgroundHandler
   static deleteRefreshToken() {
     FirebaseMessaging.instance.deleteToken();
     FirebaseMessaging.instance.getToken().then(_onTokenChanged);

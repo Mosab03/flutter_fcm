@@ -69,19 +69,18 @@ class LocalNotification {
       Map<String, dynamic>? payload,
       String? icon}) {
     flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            // channel.description,
-            // TODO add a proper drawable resource to android, for now using
-            //      one that already exists in example app.
-            icon: icon,
-          ),
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
+          icon: icon,
         ),
-        payload: jsonEncode(payload));
+      ),
+      payload: jsonEncode(payload),
+    );
   }
 }
