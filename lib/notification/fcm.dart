@@ -62,9 +62,13 @@ class FCM {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
         print('Happy');
+        print(notification.toString());
+        print(android.toString());
+        print(withLocalNotification);
         if (notification != null && android != null && withLocalNotification) {
           await LocalNotification.showNotification(
               notification: notification, payload: message.data, icon: icon);
+          print('axxx');
         }
       },
     );
