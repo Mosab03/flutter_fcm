@@ -38,11 +38,11 @@ class Messaging {
     try {
       await FCM.initializeFCM(
           onNotificationPressed: (Map<String, dynamic> data) {
-            print(data);
+            debugPrint(data.toString());
           },
           onTokenChanged: (String token) {
             Messaging.token = token;
-            print(token);
+            debugPrint(token);
           },
           icon: 'icon');
     } catch (e) {}

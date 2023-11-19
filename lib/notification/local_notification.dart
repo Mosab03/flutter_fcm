@@ -41,6 +41,12 @@ class LocalNotification {
             iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
+      onDidReceiveBackgroundNotificationResponse: (notificationResponse) {
+        onDidReceiveNotificationResponse(
+          notificationResponse: notificationResponse,
+          onData: onNotificationPressed,
+        );
+      },
       onDidReceiveNotificationResponse: (notificationResponse) {
         onDidReceiveNotificationResponse(
             notificationResponse: notificationResponse,
@@ -51,7 +57,7 @@ class LocalNotification {
 
   static Future onDidReceiveLocalNotification(
       int id, String? title, String? body, String? payload) async {
-    print(title);
+    debugPrint(title);
   }
 
   static void onDidReceiveNotificationResponse(

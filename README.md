@@ -43,7 +43,7 @@ class Messaging {
   @pragma('vm:entry-point')
   static Future<void> onNotificationReceived(RemoteMessage message) async {
     await Firebase.initializeApp();
-    //print('Handling a message ${message}');
+    //debugPrint('Handling a message ${message}');
 
   }
 
@@ -60,7 +60,7 @@ class Messaging {
         },
         onTokenChanged: (String? token) {
           if (token != null) {
-            //print('FCM token  $token');
+            //debugPrint('FCM token  $token');
             Messaging.token = token;
 
 
@@ -70,7 +70,7 @@ class Messaging {
         icon: 'ic_launcher',
       );
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
   }
 }

@@ -39,8 +39,8 @@ class FCM {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
-      print('getInitialMessage');
-      print(message.toString());
+      debugPrint('getInitialMessage');
+      debugPrint(message.toString());
       if (message != null) {
         if (navigatorKey != null)
           Timer.periodic(
@@ -55,31 +55,27 @@ class FCM {
     });
 
     FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) async {
-        print('A new onMessage event was published!');
+      (RemoteMessage message) {
+        debugPrint('A new onMessage event was published!');
 
         onNotificationReceived(message);
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
-        print('Happy');
-        print(notification.toString());
-        print(android.toString());
-        print(withLocalNotification);
+
         if (notification != null && android != null && withLocalNotification) {
-          await LocalNotification.showNotification(
+          LocalNotification.showNotification(
               notification: notification, payload: message.data, icon: icon);
-          print('axxx');
         }
       },
     );
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
+      debugPrint('A new onMessageOpenedApp event was published!');
       onNotificationPressed!(message.data);
     });
 
     FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
-      print('A new onBackgroundMessage event was published!');
+      debugPrint('A new onBackgroundMessage event was published!');
       onNotificationPressed!(message.data);
       onNotificationReceived(message);
     });
