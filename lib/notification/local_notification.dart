@@ -14,8 +14,6 @@ class LocalNotification {
   );
 
   /// Initialize the [FlutterLocalNotificationsPlugin] package.
-  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
 
   static initializeLocalNotification(
       {void onNotificationPressed(Map<String, dynamic> data)?,
@@ -24,7 +22,7 @@ class LocalNotification {
     ///
     /// We use this channel in the `AndroidManifest.xml` file to override the
     /// default FCM channel to enable heads up notifications.
-    await flutterLocalNotificationsPlugin
+    await FlutterLocalNotificationsPlugin()
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
@@ -39,7 +37,7 @@ class LocalNotification {
         InitializationSettings(
             android: initializationSettingsAndroid,
             iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(
+    FlutterLocalNotificationsPlugin().initialize(
       initializationSettings,
       onDidReceiveBackgroundNotificationResponse: (notificationResponse) {
         LocalNotification.onDidReceiveNotificationResponse(
@@ -74,7 +72,7 @@ class LocalNotification {
       {required RemoteNotification notification,
       Map<String, dynamic>? payload,
       String? icon}) {
-    flutterLocalNotificationsPlugin.show(
+    FlutterLocalNotificationsPlugin().show(
       notification.hashCode,
       notification.title,
       notification.body,
