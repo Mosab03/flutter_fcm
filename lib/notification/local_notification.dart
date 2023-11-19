@@ -14,6 +14,17 @@ class LocalNotification {
   );
 
   /// Initialize the [FlutterLocalNotificationsPlugin] package.
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  static InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+
+  static AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('ic_launcher');
+  static DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings(
+          onDidReceiveLocalNotification: onDidReceiveLocalNotification);
 
   static initializeLocalNotification(
       {void onNotificationPressed(Map<String, dynamic> data)?,
@@ -22,22 +33,14 @@ class LocalNotification {
     ///
     /// We use this channel in the `AndroidManifest.xml` file to override the
     /// default FCM channel to enable heads up notifications.
-    await FlutterLocalNotificationsPlugin()
+    await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-    AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings(icon);
-    final DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
-    FlutterLocalNotificationsPlugin().initialize(
+
+    flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveBackgroundNotificationResponse: (notificationResponse) {
         LocalNotification.onDidReceiveNotificationResponse(
@@ -72,7 +75,7 @@ class LocalNotification {
       {required RemoteNotification notification,
       Map<String, dynamic>? payload,
       String? icon}) {
-    FlutterLocalNotificationsPlugin().show(
+    flutterLocalNotificationsPlugin.show(
       notification.hashCode,
       notification.title,
       notification.body,
