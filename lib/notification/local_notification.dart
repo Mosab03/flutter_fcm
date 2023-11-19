@@ -42,13 +42,13 @@ class LocalNotification {
     flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveBackgroundNotificationResponse: (notificationResponse) {
-        onDidReceiveNotificationResponse(
+        LocalNotification.onDidReceiveNotificationResponse(
           notificationResponse: notificationResponse,
           onData: onNotificationPressed,
         );
       },
       onDidReceiveNotificationResponse: (notificationResponse) {
-        onDidReceiveNotificationResponse(
+        LocalNotification.onDidReceiveNotificationResponse(
             notificationResponse: notificationResponse,
             onData: onNotificationPressed);
       },
