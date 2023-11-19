@@ -43,13 +43,13 @@ class LocalNotification {
     flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveBackgroundNotificationResponse: (notificationResponse) {
-        LocalNotification.onDidReceiveNotificationResponse(
+        onDidReceiveNotificationResponse(
           notificationResponse: notificationResponse,
           onData: onNotificationPressed,
         );
       },
       onDidReceiveNotificationResponse: (notificationResponse) {
-        LocalNotification.onDidReceiveNotificationResponse(
+        onDidReceiveNotificationResponse(
             notificationResponse: notificationResponse,
             onData: onNotificationPressed);
       },
@@ -59,16 +59,6 @@ class LocalNotification {
   static Future onDidReceiveLocalNotification(
       int id, String? title, String? body, String? payload) async {
     debugPrint(title);
-  }
-
-  static void onDidReceiveNotificationResponse(
-      {required NotificationResponse notificationResponse, onData}) async {
-    final String? payload = notificationResponse.payload;
-    if (notificationResponse.payload != null) {
-      debugPrint('notification payload: $payload');
-      var jsonData = jsonDecode(payload!);
-      onData(jsonData);
-    }
   }
 
   static showNotification(
@@ -89,5 +79,16 @@ class LocalNotification {
       ),
       payload: jsonEncode(payload),
     );
+  }
+}
+
+@pragma('vm:entry-point')
+void onDidReceiveNotificationResponse(
+    {required NotificationResponse notificationResponse, onData}) async {
+  final String? payload = notificationResponse.payload;
+  if (notificationResponse.payload != null) {
+    debugPrint('notification payload: $payload');
+    var jsonData = jsonDecode(payload!);
+    onData(jsonData);
   }
 }
